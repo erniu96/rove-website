@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>购买 Rove</title>
+<link rel="icon" href="../icon.png">
+<link rel="stylesheet" href="../style.css">
+<link rel="alternate" hreflang="zh-Hans" href="https://rove-cn.hhwyz.com/zh/buy.html">
+<link rel="alternate" hreflang="en" href="https://rove.hhwyz.com/en/buy.html">
+</head>
+<body>
+<header class="topbar"><nav class="page">
+  <a class="brand" href="index.html"><img src="../icon.png" alt="">Rove</a>
+  <div class="links"><a href="index.html#features">功能</a><a href="index.html#more">更多</a><a href="index.html#pricing">价格</a><a href="index.html#faq">常见问题</a><a href="../en/buy.html" hreflang="en" lang="en">English</a></div>
+  <button class="button" disabled title="Rove 还没准备好">敬请期待</button>
+  <details class="menu"><summary aria-label="菜单">☰</summary><div class="panel"><a href="index.html#features">功能</a><a href="index.html#more">更多</a><a href="index.html#pricing">价格</a><a href="index.html#faq">常见问题</a><a href="../en/buy.html" hreflang="en" lang="en">English</a></div></details>
+</nav></header>
+<main class="page"><div class="buy">
+  <article>
+    <h1>购买 Rove</h1>
+    <p class="lead">¥89 一次买断，一个授权码可用于自己的 3 台 Mac，含 1.x 的全部更新。支持支付宝、微信支付和银行卡。</p>
+    <p class="small">Rove 还没准备好，下载和购买即将开放，敬请期待。开放后可以先免费试用 14 天，试用结束后再购买。</p>
+    <section id="result" hidden>
+  <h2>感谢购买！</h2>
+  <p id="status">正在生成授权码…</p>
+  <code class="key" id="key"></code>
+  <p class="small">授权码也已发到你的邮箱。在 Rove 中打开「设置 › 授权 › 输入授权码」粘贴即可。管理已激活的 Mac：<a id="manage" href="#">授权管理</a></p>
+</section>
+  </article>
+  <div class="box plan featured">
+    <h3>Rove</h3>
+    <div class="price">¥89 <small>一次买断</small></div>
+    <ul class="check"><li>所有文件夹、U 盘、移动硬盘和 NAS</li><li>一个授权码可用于自己的 3 台 Mac</li><li>含 1.x 的全部更新</li><li>30 天内无理由退款</li></ul>
+    <div class="actions"><button class="button" id="checkout" disabled>敬请期待</button></div>
+    <p class="small">订单由我们的在线经销商 Paddle.com 处理，Paddle 是订单的记录商家（Merchant of Record），负责收款、开票与售后。</p>
+  </div>
+</div></main>
+<script>
+// Fill in once the Paddle account exists (client token and price id are public by design). Until then the button stays disabled.
+const CONFIG = { paddleClientToken: "", priceId: "", environment: "sandbox", licenseServer: "" };
+const button = document.getElementById("checkout");
+if (CONFIG.paddleClientToken && CONFIG.priceId) {
+  const script = document.createElement("script");
+  script.src = "https://cdn.paddle.com/paddle/v2/paddle.js";
+  script.onload = () => {
+    if (CONFIG.environment === "sandbox") Paddle.Environment.set("sandbox");
+    Paddle.Initialize({ token: CONFIG.paddleClientToken, eventCallback: (event) => {
+      if (event.name === "checkout.completed") showLicense(event.data.transaction_id);
+    } });
+    button.disabled = false; button.textContent = "购买 Rove";
+    button.onclick = () => Paddle.Checkout.open({ items: [{ priceId: CONFIG.priceId, quantity: 1 }], settings: { locale: "zh-Hans" }, customData: { lang: "zh-Hans" } }); // lang: the e-mail's language
+  };
+  document.head.appendChild(script);
+}
+async function showLicense(transaction) {
+  document.getElementById("result").hidden = false;
+  document.getElementById("manage").href = CONFIG.licenseServer + "/manage";
+  for (let attempt = 0; attempt < 30; attempt++) { // the license is issued when Paddle's webhook arrives
+    const response = await fetch(`${CONFIG.licenseServer}/v1/purchase/${encodeURIComponent(transaction)}`);
+    if (response.ok) {
+      const { key } = await response.json();
+      document.getElementById("status").textContent = "你的授权码：";
+      document.getElementById("key").textContent = key;
+      return;
+    }
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+  }
+  document.getElementById("status").textContent = "授权码稍后会发到你的邮箱。如果 10 分钟内没有收到，请联系我们。";
+}
+</script>
+<footer><div class="page">
+  <div><a class="brand" href="index.html"><img src="../icon.png" alt="">Rove</a><span>© 2026 Rove · Mac 上的即时文件搜索</span></div>
+  <div><h4>产品</h4><a href="index.html#features">功能</a><a href="index.html#pricing">价格</a><a href="buy.html">购买</a></div>
+  <div><h4>支持</h4><a href="index.html#faq">常见问题</a><a href="../en/buy.html" hreflang="en" lang="en">English</a></div>
+</div></footer>
+</body>
+</html>

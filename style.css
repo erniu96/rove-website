@@ -1,0 +1,201 @@
+/* Rove website. Apple HIG system colors (light / dark), following the system appearance.
+   Two designed layouts: desktop at 1920 wide uses the width (two-column hero, four-column grids,
+   fixed blurred top bar, hover feedback); phones (≤ 672) get one column, 44 pt touch targets, no sideways scrolling. */
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff; --bg2: #f2f2f7; --bg3: #ffffff; --bg-elevated: #ffffff;
+  --label: #000000; --label2: rgba(60, 60, 67, 0.6); --label3: rgba(60, 60, 67, 0.3);
+  --separator: rgba(60, 60, 67, 0.29); --fill: rgba(120, 120, 128, 0.12);
+  --accent: #007aff; --green: #34c759; --orange: #ff9500; --purple: #af52de; --teal: #30b0c7;
+  --bar: rgba(255, 255, 255, 0.72); --shadow: 0 12px 40px rgba(0, 0, 0, 0.12); --shadow-hover: 0 10px 28px rgba(0, 0, 0, 0.12);
+  --window: #ffffff; --window-bar: #f6f6f6; --row-alt: #f5f5f7; --selection: #0064e1;
+  --page: 1360px; --gutter: 32px;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #000000; --bg2: #1c1c1e; --bg3: #2c2c2e; --bg-elevated: #1c1c1e;
+    --label: #ffffff; --label2: rgba(235, 235, 245, 0.6); --label3: rgba(235, 235, 245, 0.3);
+    --separator: rgba(84, 84, 88, 0.6); --fill: rgba(120, 120, 128, 0.24);
+    --accent: #0a84ff; --green: #30d158; --orange: #ff9f0a; --purple: #bf5af2; --teal: #40c8e0;
+    --bar: rgba(22, 22, 23, 0.72); --shadow: 0 12px 40px rgba(0, 0, 0, 0.6); --shadow-hover: 0 10px 28px rgba(0, 0, 0, 0.5);
+    --window: #1e1e1e; --window-bar: #2b2b2b; --row-alt: #252526; --selection: #0058d0;
+  }
+}
+* { box-sizing: border-box; }
+html { scroll-padding-top: 76px; -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--label); font: 17px/1.6 -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC", sans-serif; }
+/* English pages: no CJK font first, or punctuation such as ’ renders full-width. */
+html[lang="en"] body { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+a { color: var(--accent); text-decoration: none; } a:hover { text-decoration: underline; }
+img { max-width: 100%; }
+.page { max-width: var(--page); margin: 0 auto; padding: 0 var(--gutter); }
+
+/* Top bar: fixed, translucent, blurred. */
+.topbar { position: sticky; top: 0; z-index: 10; background: var(--bar); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); border-bottom: 1px solid var(--separator); }
+.topbar nav { display: flex; align-items: center; gap: 28px; height: 60px; }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 19px; color: var(--label); margin-right: auto; }
+.brand:hover { text-decoration: none; }
+.brand img { width: 30px; height: 30px; }
+.topbar .links { display: flex; gap: 28px; }
+.topbar .links a { color: var(--label); font-size: 15px; }
+.topbar .links a:hover { color: var(--accent); text-decoration: none; }
+.topbar .button { padding: 7px 16px; font-size: 15px; border-radius: 980px; }
+.menu { display: none; }
+
+/* Buttons: 44 pt high on touch screens. */
+.button { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 10px 24px; border-radius: 12px; background: var(--accent); color: #fff; font-weight: 600; border: 0; font-size: 17px; cursor: pointer; transition: filter .15s, transform .15s; }
+.button.secondary { background: var(--fill); color: var(--accent); }
+.button:hover { text-decoration: none; filter: brightness(1.08); }
+.button:active { transform: scale(.98); }
+.button[disabled] { opacity: 0.4; cursor: default; filter: none; transform: none; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; }
+
+/* Hero: text and the window side by side on a wide screen. */
+.hero { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 64px; align-items: center; padding: 88px 0 72px; }
+.hero h1 { font-size: 60px; line-height: 1.08; letter-spacing: -0.02em; margin: 12px 0 16px; }
+.eyebrow { display: inline-block; font-size: 14px; font-weight: 600; color: var(--accent); background: var(--fill); border-radius: 980px; padding: 4px 12px; }
+.lead { font-size: 21px; line-height: 1.5; color: var(--label2); margin: 0 0 28px; }
+.meta { font-size: 14px; color: var(--label2); margin-top: 18px; }
+
+/* An illustration of Rove's window in HTML, so it follows the appearance and stays sharp. */
+.window { background: var(--window); border-radius: 12px; box-shadow: var(--shadow); border: 1px solid var(--separator); overflow: hidden; font: 13px/1.4 -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif; }
+.window .bar { display: flex; align-items: center; gap: 12px; height: 46px; padding: 0 14px; background: var(--window-bar); border-bottom: 1px solid var(--separator); }
+.dots { display: flex; gap: 7px; } .dots i { width: 12px; height: 12px; border-radius: 50%; background: #ff5f57; } .dots i:nth-child(2) { background: #febc2e; } .dots i:nth-child(3) { background: #28c840; }
+.window .title { font-weight: 600; color: var(--label2); }
+.window .search { flex: 1; margin-left: 24px; background: var(--fill); border-radius: 7px; padding: 4px 10px; color: var(--label); font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.window .filter { background: var(--fill); border-radius: 7px; padding: 4px 12px; color: var(--label2); }
+.window table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+.window th { text-align: left; font-weight: 500; color: var(--label2); padding: 6px 10px; border-bottom: 1px solid var(--separator); }
+.window td { padding: 5px 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.window tr:nth-child(even) td { background: var(--row-alt); }
+.window tr.selected td { background: var(--selection); color: #fff; }
+.window td.num { text-align: right; font-variant-numeric: tabular-nums; }
+.window th.num { text-align: right; }
+.window .col-name { width: 38%; } .window .col-path { width: 34%; } .window .col-size { width: 12%; } .window .col-date { width: 16%; }
+.window .path { color: var(--label2); } .window tr.selected .path { color: rgba(255, 255, 255, .8); }
+.file { display: inline-block; width: 11px; height: 14px; border-radius: 2px; margin-right: 7px; vertical-align: -2px; background: var(--accent); }
+.file.pdf { background: #ff3b30; } .file.key { background: #1a8cff; } .file.xls { background: #34c759; } .file.dir { width: 15px; height: 12px; background: #5ac8fa; border-radius: 3px; }
+.window .status { display: flex; justify-content: space-between; padding: 6px 12px; border-top: 1px solid var(--separator); color: var(--label2); background: var(--window-bar); font-size: 12px; }
+
+/* Numbers measured on 7.5 million records (README). */
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; padding: 40px 0; border-top: 1px solid var(--separator); border-bottom: 1px solid var(--separator); }
+.stat b { display: block; font-size: 40px; line-height: 1.1; letter-spacing: -0.02em; }
+.stat span { color: var(--label2); font-size: 15px; }
+
+section { padding: 88px 0 0; }
+.section-head { display: flex; align-items: end; justify-content: space-between; gap: 32px; margin-bottom: 32px; }
+h2 { font-size: 40px; line-height: 1.15; letter-spacing: -0.015em; margin: 0; }
+.section-head p { color: var(--label2); margin: 0; max-width: 520px; font-size: 18px; }
+h3 { font-size: 19px; margin: 0 0 8px; }
+
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.card { background: var(--bg2); border-radius: 18px; padding: 28px; transition: transform .2s, box-shadow .2s; }
+.card p { margin: 0; color: var(--label2); }
+/* Feature icons: illustrations in the app icon's style (assets made with image_gen, website/images/features, 3×). */
+.icon { display: block; width: 56px; height: 56px; margin-bottom: 16px; }
+@media (hover: hover) { .card:hover, .plan:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); } }
+
+/* More: the features not everyone needs, larger cards with an example each. */
+.more { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.more .card { display: flex; flex-direction: column; }
+.more pre { margin: 20px 0 0; background: var(--bg-elevated); border: 1px solid var(--separator); border-radius: 12px; padding: 14px 16px; font-size: 13px; line-height: 1.5; white-space: pre-wrap; word-break: break-word; color: var(--label); }
+
+.plans { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+.plan { border: 1px solid var(--separator); border-radius: 20px; padding: 36px; background: var(--bg3); transition: transform .2s, box-shadow .2s; display: flex; flex-direction: column; }
+.plan.featured { border: 2px solid var(--accent); }
+.plan .actions { margin-top: auto; }
+.price { font-size: 44px; font-weight: 700; line-height: 1.1; margin: 10px 0 4px; letter-spacing: -0.02em; }
+.price small { font-size: 16px; color: var(--label2); font-weight: 400; letter-spacing: 0; }
+ul.check { list-style: none; padding: 0; margin: 20px 0 28px; }
+ul.check li { padding: 5px 0 5px 28px; position: relative; }
+ul.check li::before { content: "✓"; position: absolute; left: 0; color: var(--green); font-weight: 700; }
+
+.faq { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0 48px; }
+details { border-bottom: 1px solid var(--separator); padding: 16px 0; }
+summary { cursor: pointer; font-weight: 600; min-height: 28px; }
+details p { color: var(--label2); margin: 10px 0 0; }
+
+.cta { margin: 96px 0 0; background: var(--bg2); border-radius: 28px; padding: 64px; text-align: center; }
+.cta h2 { margin-bottom: 12px; }
+.cta p { color: var(--label2); margin: 0 0 28px; font-size: 19px; }
+.cta .actions { justify-content: center; }
+
+code, .key { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.85em; }
+.key { display: block; word-break: break-all; background: var(--bg2); border-radius: 10px; padding: 14px; margin: 12px 0; user-select: all; }
+.small { font-size: 14px; color: var(--label2); }
+
+/* Legal and purchase pages: a side column on wide screens. */
+.doc { display: grid; grid-template-columns: 240px minmax(0, 760px); gap: 64px; padding: 64px 0 0; }
+.doc aside { position: sticky; top: 92px; align-self: start; }
+.doc aside a { display: block; padding: 8px 12px; border-radius: 8px; color: var(--label); }
+.doc aside a:hover { background: var(--fill); text-decoration: none; }
+.doc aside a[aria-current] { background: var(--fill); font-weight: 600; }
+article h1 { font-size: 40px; line-height: 1.15; margin: 0 0 8px; letter-spacing: -0.015em; }
+article h2 { font-size: 22px; margin: 36px 0 8px; letter-spacing: 0; }
+article p, article li { color: var(--label); }
+.note { background: var(--bg2); border-left: 4px solid var(--orange); border-radius: 8px; padding: 12px 16px; color: var(--label2); }
+.buy { display: grid; grid-template-columns: minmax(0, 1fr) 420px; gap: 64px; padding: 72px 0 0; align-items: start; }
+.buy .box { position: sticky; top: 92px; }
+
+footer { margin-top: 96px; border-top: 1px solid var(--separator); background: var(--bg2); }
+footer .page { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 32px; padding-top: 48px; padding-bottom: 48px; font-size: 14px; color: var(--label2); }
+footer h4 { margin: 0 0 10px; font-size: 14px; color: var(--label); }
+footer a { display: block; color: var(--label2); padding: 3px 0; }
+footer .brand { font-size: 17px; margin-bottom: 8px; }
+
+/* Between phone and desktop: two columns. */
+@media (max-width: 1023px) {
+  :root { --gutter: 24px; }
+  .hero { grid-template-columns: 1fr; gap: 48px; padding: 64px 0 56px; }
+  .hero h1 { font-size: 48px; }
+  .grid, .more { grid-template-columns: repeat(2, 1fr); }
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .faq { grid-template-columns: 1fr; }
+  .doc { grid-template-columns: 1fr; gap: 24px; }
+  .doc aside { position: static; display: flex; flex-wrap: wrap; gap: 4px; }
+  .buy { grid-template-columns: 1fr; gap: 32px; }
+  .buy .box { position: static; }
+  footer .page { grid-template-columns: 1fr 1fr; }
+}
+
+/* Phones (≤ 672): one column, 44 pt targets, nothing wider than the screen. */
+@media (max-width: 672px) {
+  :root { --gutter: 16px; }
+  body { font-size: 16px; }
+  .topbar nav { height: 52px; gap: 12px; }
+  .topbar .links { display: none; }
+  .menu { display: block; position: relative; }
+  .menu summary { list-style: none; display: grid; place-items: center; width: 44px; height: 44px; border: 0; padding: 0; font-size: 22px; }
+  .menu summary::-webkit-details-marker { display: none; }
+  .menu[open] .panel { position: absolute; right: 0; top: 48px; background: var(--bg-elevated); border: 1px solid var(--separator); border-radius: 14px; box-shadow: var(--shadow); padding: 6px; min-width: 180px; }
+  .menu .panel a { display: flex; align-items: center; min-height: 44px; padding: 0 14px; color: var(--label); border-radius: 10px; }
+  .menu details, .menu { border: 0; padding: 0; }
+  .topbar .button { padding: 6px 14px; min-height: 36px; }
+  .hero { padding: 40px 0 40px; gap: 32px; }
+  .hero h1 { font-size: 36px; }
+  .lead { font-size: 18px; }
+  .actions .button { flex: 1 1 100%; }
+  .window { font-size: 12px; }
+  .window .title, .window .filter, .window .col-path, .window .col-date { display: none; }
+  .window .col-name { width: 72%; } .window .col-size { width: 28%; }
+  .window .search { margin-left: 4px; }
+  .stats { grid-template-columns: 1fr 1fr; gap: 20px; padding: 28px 0; }
+  .stat b { font-size: 28px; }
+  section { padding-top: 56px; }
+  .section-head { display: block; margin-bottom: 20px; }
+  .section-head p { margin-top: 8px; font-size: 16px; }
+  h2 { font-size: 30px; }
+  .grid, .more, .plans { grid-template-columns: 1fr; gap: 14px; }
+  .card { padding: 22px; }
+  .plan { padding: 24px; }
+  .price { font-size: 36px; }
+  summary { padding: 8px 0; min-height: 44px; }
+  .cta { margin-top: 56px; padding: 40px 20px; border-radius: 20px; }
+  .doc { padding-top: 32px; }
+  .doc aside a { padding: 10px 12px; }
+  article h1 { font-size: 30px; }
+  .buy { padding-top: 32px; }
+  footer { margin-top: 56px; }
+  footer .page { grid-template-columns: 1fr; gap: 20px; }
+  footer a { padding: 10px 0; }
+}
